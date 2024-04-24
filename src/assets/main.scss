@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.btn {
+  @apply text-white font-light py-1 px-2 rounded text-sm mr-1 mt-1;
+}
+
+.btn-outline-primary {
+  @apply bg-blue-600;
+
+  @media screen and (min-width: 640px) {
+    &:hover {
+      @apply bg-blue-500;
+    }
+  }
+
+  &.active {
+    @apply bg-blue-900;
+  }
+
+  &:disabled {
+    @apply bg-slate-100 text-slate-400;
+  }
+}
+
+.btn-danger {
+  @apply bg-red-600 mt-0;
+
+  @media screen and (min-width: 640px) {
+    &:hover {
+      @apply bg-red-500;
+    }
+  }
+
+  &.active {
+    @apply bg-red-700;
+  }
+}
+
+.btn-outline-danger {
+  @apply outline-red-600 outline text-black mr-2 mt-2;
+
+  @media screen and (min-width: 640px) {
+    &:hover {
+      @apply outline-red-500;
+    }
+  }
+
+  &.active {
+    @apply outline-2 bg-red-100 font-medium;
+  }
+}
+
+.btn-success {
+  @apply bg-green-600 mt-0;
+
+  @media screen and (min-width: 640px) {
+    &:hover {
+      @apply bg-green-500;
+    }
+  }
+
+  &.active {
+    @apply bg-green-700;
+  }
+}
+
+.btn-outline-success {
+  @apply outline-green-600 outline text-black mr-2 mt-2;
+
+  @media screen and (min-width: 640px) {
+    &:hover {
+      @apply outline-green-500;
+    }
+  }
+
+  &.active {
+    @apply bg-green-200 outline-2 font-medium;
+  }
+
+  &:disabled {
+    @apply outline-none bg-slate-100 text-slate-400;
+  }
+}
+
+.group {
+  @apply p-1 w-auto rounded;
+}
+
+.label {
+  @apply block mb-1 text-sm font-medium text-gray-900;
+}
+
+.input-group {
+  @apply flex;
+}
+
+.form-control {
+  @apply border  text-black border-gray-400 placeholder-gray-700 text-sm rounded-lg focus:border-gray-500 focus:outline-gray-500 block w-full p-1.5 mr-1;
+}
+
+.submit {
+  @apply text-xl mt-5;
+}
