@@ -1437,7 +1437,7 @@ const condition = {
     { name: '租金最高', value: '3', param: 'order=money&orderType=desc' },
     { name: '租金最低', value: '4', param: 'order=money&orderType=asc' },
     { name: '坪數最大', value: '5', param: 'order=area&orderType=desc' },
-    { name: '坪數最小', value: '6', param: 'order=area&orderType=desc' }
+    { name: '坪數最小', value: '6', param: 'order=area&orderType=asc' }
   ],
   // 類型
   kind: [

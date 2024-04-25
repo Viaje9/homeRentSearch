@@ -271,15 +271,15 @@
           <div v-if="locationType === 'subway' && subwayRoute" class="mb-2">
             <button
               v-for="item in condition.taipei[subwayRoute]"
-              :key="item.sid"
+              :key="item.nid"
               type="button"
-              :disabled="subwayStation.length === 5 && !subwayStation.includes(item.sid)"
+              :disabled="subwayStation.length === 5 && !subwayStation.includes(item.nid)"
               :class="{
-                active: subwayStation.includes(item.sid),
-                disabled: subwayStation.length === 5 && !subwayStation.includes(item.sid)
+                active: subwayStation.includes(item.nid),
+                disabled: subwayStation.length === 5 && !subwayStation.includes(item.nid)
               }"
               class="btn btn-outline-success text-nowrap"
-              @click="onClickSubwayStation(item.sid)"
+              @click="onClickSubwayStation(item.nid)"
             >
               {{ item.name }}
             </button>
@@ -434,12 +434,13 @@ function onClickNotice(value) {
   localStorage.setItem('notice', JSON.stringify(notice.value))
 }
 
-const locationType = ref('city')
+const locationType = ref(localStorage.getItem('locationType') || 'city')
 function onClickLocationType(value) {
   locationType.value = value
   city.value = []
   subwayRoute.value = ''
   subwayStation.value = []
+  localStorage.setItem('locationType', locationType.value)
   localStorage.setItem('city', JSON.stringify(city.value))
   localStorage.setItem('subwayRoute', subwayRoute.value)
   localStorage.setItem('subwayStation', JSON.stringify(subwayStation.value))
@@ -455,7 +456,7 @@ function onClickCity(value) {
   localStorage.setItem('city', JSON.stringify(city.value))
 }
 
-const subwayRoute = ref(JSON.parse(localStorage.getItem('subwayRoute')) || '')
+const subwayRoute = ref(localStorage.getItem('subwayRoute') || '')
 function onClickSubwayRoute(value) {
   subwayRoute.value = value
   subwayStation.value = []
@@ -497,7 +498,8 @@ function submit() {
   const optionParam = option.value.length ? `option=${option.value.join(',')}` : ''
   const fitmentParam = fitment.value.length ? `multiFitment=${fitment.value.join(',')}` : ''
   const noticeParam = notice.value.length ? `multiNotice=${notice.value.join(',')}` : ''
-  const cityParam = city.value.length ? `section=${city.value.join(',')}` : ''
+  const cityParam = city.value.length ? `searchtype=1section=${city.value.join(',')}` : ''
+  const subwayRouteParam = subwayRoute.value ? `searchtype=4&mrtline=${subwayRoute.value}` : ''
   const subwayStationParam = subwayStation.value.length
     ? `mrtcoods=${subwayStation.value.join(',')}`
     : ''
@@ -517,6 +519,7 @@ function submit() {
     fitmentParam,
     noticeParam,
     cityParam,
+    subwayRouteParam,
     subwayStationParam
   ]
     .filter((item) => item)
