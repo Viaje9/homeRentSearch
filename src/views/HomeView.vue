@@ -497,7 +497,7 @@ function submit() {
   const optionParam = option.value.length ? `option=${option.value.join(',')}` : ''
   const fitmentParam = fitment.value.length ? `multiFitment=${fitment.value.join(',')}` : ''
   const noticeParam = notice.value.length ? `multiNotice=${notice.value.join(',')}` : ''
-  const cityParam = city.value.length ? `searchtype=1section=${city.value.join(',')}` : ''
+  const cityParam = city.value.length ? `searchtype=1&section=${city.value.join(',')}` : ''
   const subwayRouteParam = subwayRoute.value ? `searchtype=4&mrtline=${subwayRoute.value}` : ''
   const subwayStationParam = subwayStation.value.length
     ? `mrtcoods=${subwayStation.value.join(',')}`
