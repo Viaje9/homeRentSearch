@@ -13,6 +13,10 @@
             <template v-if="item.count !== 1">
               <p class="text-red-500 inline">重複次數 {{ item.count }}</p>
             </template>
+            <br />
+            <span class="text-green-600">
+              {{ item?.surrounding?.desc }}{{ item?.surrounding?.distance }}
+            </span>
           </p>
           <a
             class="fs-7 text-blue-600"
