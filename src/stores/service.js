@@ -29,7 +29,7 @@ export const useServiceStore = defineStore('service', () => {
   }
 
   function setRecords(val) {
-    records.value = val
+    records.value = val?.replace(/,/g, '')
   }
 
   function setRentUrlParams(val) {

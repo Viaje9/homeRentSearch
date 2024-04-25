@@ -305,7 +305,7 @@ const router = useRouter()
 const order = ref(localStorage.getItem('order'))
 function onClickOrder(value) {
   if (order.value === value) {
-    order.value = null
+    order.value = ''
   } else {
     order.value = value
   }
@@ -313,7 +313,7 @@ function onClickOrder(value) {
   localStorage.setItem('order', order.value)
 }
 
-const keywords = ref(localStorage.getItem('keywords') || null)
+const keywords = ref(localStorage.getItem('keywords') || '')
 function onChangeKeywords(event) {
   keywords.value = event.target.value
   localStorage.setItem('keywords', keywords.value)
@@ -323,10 +323,10 @@ function resetKeywords() {
   localStorage.setItem('keywords', keywords.value)
 }
 
-const kind = ref(localStorage.getItem('kind') || null)
+const kind = ref(localStorage.getItem('kind') || '')
 function onClickKind(value) {
   if (kind.value === value) {
-    kind.value = null
+    kind.value = ''
   } else {
     kind.value = value
   }
@@ -334,13 +334,13 @@ function onClickKind(value) {
   localStorage.setItem('kind', kind.value)
 }
 
-const rentPrice = ref(JSON.parse(localStorage.getItem('rentPrice')) || [null, null])
+const rentPrice = ref(JSON.parse(localStorage.getItem('rentPrice')) || ['', ''])
 function onChangeRentPrice(event, index) {
   rentPrice.value[index] = event.target.value
   localStorage.setItem('rentPrice', JSON.stringify(rentPrice.value))
 }
 function resetRentPrice() {
-  rentPrice.value = [null, null]
+  rentPrice.value = ['', '']
   localStorage.setItem('rentPrice', JSON.stringify(rentPrice.value))
 }
 
@@ -364,30 +364,30 @@ function onClickOther(value) {
   localStorage.setItem('other', JSON.stringify(other.value))
 }
 
-const shape = ref(JSON.parse(localStorage.getItem('shape')) || null)
+const shape = ref(JSON.parse(localStorage.getItem('shape')) || '')
 function onClickShape(value) {
   if (shape.value === value) {
-    shape.value = null
+    shape.value = ''
   } else {
     shape.value = value
   }
   localStorage.setItem('shape', JSON.stringify(shape.value))
 }
 
-const area = ref(JSON.parse(localStorage.getItem('area')) || [null, null])
+const area = ref(JSON.parse(localStorage.getItem('area')) || ['', ''])
 function onChangeArea(event, index) {
   area.value[index] = event.target.value
   localStorage.setItem('area', JSON.stringify(area.value))
 }
 function resetArea() {
-  area.value = [null, null]
+  area.value = ['', '']
   localStorage.setItem('area', JSON.stringify(area.value))
 }
 
-const floor = ref(JSON.parse(localStorage.getItem('floor')) || null)
+const floor = ref(JSON.parse(localStorage.getItem('floor')) || '')
 function onClickFloor(value) {
   if (floor.value === value) {
-    floor.value = null
+    floor.value = ''
   } else {
     floor.value = value
   }
@@ -438,7 +438,7 @@ const locationType = ref('city')
 function onClickLocationType(value) {
   locationType.value = value
   city.value = []
-  subwayRoute.value = null
+  subwayRoute.value = ''
   subwayStation.value = []
   localStorage.setItem('city', JSON.stringify(city.value))
   localStorage.setItem('subwayRoute', subwayRoute.value)
@@ -455,7 +455,7 @@ function onClickCity(value) {
   localStorage.setItem('city', JSON.stringify(city.value))
 }
 
-const subwayRoute = ref(JSON.parse(localStorage.getItem('subwayRoute')) || null)
+const subwayRoute = ref(JSON.parse(localStorage.getItem('subwayRoute')) || '')
 function onClickSubwayRoute(value) {
   subwayRoute.value = value
   subwayStation.value = []
@@ -522,7 +522,7 @@ function submit() {
     .filter((item) => item)
     .join('&')
 
-  getRentData(urlParams ? `&${urlParams}` : '')
+  getRentData(urlParams ? `&${urlParams}` : ' ')
     .then(({ data }) => {
       setRentUrlParams(urlParams)
       setData(data.rentList)
