@@ -26,7 +26,7 @@
     </template>
   </div>
 
-  <div class="fixed bottom-0 left-0 z-50 w-full h-24 bg-slate-500 border-t border-gray-200">
+  <div class="fixed bottom-0 left-0 z-50 w-full h-28 pb-4 bg-slate-500 border-t border-gray-200">
     <div
       class="h-1/2 flex items-center justify-center group text-white bg-slate-400"
       @click="research()"
