@@ -74,7 +74,7 @@
             <button type="button" class="btn btn-danger" @click="resetRentPrice()">Reset</button>
           </div>
         </div>
-        <div class="group">
+        <div class="group" v-if="kind === '1'">
           <div class="label">格局</div>
           <div class="btn-group" role="group">
             <button
@@ -330,6 +330,8 @@ function onClickKind(value) {
     kind.value = value
   }
 
+  room.value = []
+  localStorage.setItem('room', JSON.stringify(room.value))
   localStorage.setItem('kind', kind.value)
 }
 
