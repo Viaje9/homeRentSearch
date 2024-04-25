@@ -298,7 +298,6 @@ import { condition } from '@/assets/constant/rent.js'
 import { ref } from 'vue'
 import { useServiceStore } from '@/stores/service.js'
 import { useRouter } from 'vue-router'
-import { getRentData } from '@/apis/rent.js'
 
 const router = useRouter()
 
@@ -475,7 +474,7 @@ function onClickSubwayStation(value) {
 }
 
 const serviceStore = useServiceStore()
-const { setData, setRecords, setRentUrlParams } = serviceStore
+const { setData, setRecords, setRentUrlParams, getRentDataEvent } = serviceStore
 
 const showLoading = ref(false)
 
@@ -525,7 +524,7 @@ function submit() {
     .filter((item) => item)
     .join('&')
 
-  getRentData(urlParams ? `&${urlParams}` : ' ')
+  getRentDataEvent(urlParams ? `${urlParams}` : ' ')
     .then(({ data }) => {
       setRentUrlParams(urlParams)
       setData(data.rentList)

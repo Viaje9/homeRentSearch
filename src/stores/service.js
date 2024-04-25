@@ -1,10 +1,12 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
+import { getRentData } from '@/apis/rent.js'
 
 export const useServiceStore = defineStore('service', () => {
   const rentData = ref([])
   const records = ref(null)
   const rentUrlParams = ref('')
+  const keepAliveDataList = ref([])
 
   function setData(val) {
     rentData.value = val
@@ -24,8 +26,6 @@ export const useServiceStore = defineStore('service', () => {
         }
         return acc
       }, [])
-
-    console.log(rentData.value)
   }
 
   function setRecords(val) {
@@ -37,6 +37,9 @@ export const useServiceStore = defineStore('service', () => {
   }
 
   function setRentUrlParams(val) {
+    if (!val) {
+      keepAliveDataList.value = []
+    }
     rentUrlParams.value = val
   }
 
@@ -61,6 +64,21 @@ export const useServiceStore = defineStore('service', () => {
     }
   }
 
+  function getRentDataEvent(urlParams) {
+    const item = keepAliveDataList.value.find((item) => item.urlParams === urlParams)
+    if (item) {
+      return new Promise((resolve) => resolve(item.result))
+    }
+
+    return getRentData(urlParams ? `&${urlParams}` : ' ').then((result) => {
+      keepAliveDataList.value.push({
+        urlParams,
+        result
+      })
+      return result
+    })
+  }
+
   return {
     rentData,
     setData,
@@ -69,6 +87,7 @@ export const useServiceStore = defineStore('service', () => {
     rentUrlParams,
     setRentUrlParams,
     prevImg,
-    nextImg
+    nextImg,
+    getRentDataEvent
   }
 })

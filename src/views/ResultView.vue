@@ -66,12 +66,11 @@
 import { ref } from 'vue'
 import { useServiceStore } from '@/stores/service.js'
 import { useRouter } from 'vue-router'
-import { getRentData } from '@/apis/rent.js'
 import ProcessImg from '@/components/ProcessImg.vue'
 
 const router = useRouter()
 const serviceStore = useServiceStore()
-const { setData, setRentUrlParams } = serviceStore
+const { setData, setRentUrlParams, getRentDataEvent } = serviceStore
 const page = ref(0)
 const showLoading = ref(false)
 
@@ -80,7 +79,7 @@ function prevPage() {
     page.value--
     const pageUrlParams = getPageUrlParams(page.value)
     showLoading.value = true
-    getRentData(`${serviceStore.rentUrlParams}${pageUrlParams}`)
+    getRentDataEvent(`${serviceStore.rentUrlParams}${pageUrlParams}`)
       .then(({ data }) => {
         setData(data.rentList)
         window.scrollTo(0, 0)
@@ -97,7 +96,7 @@ function nextPage() {
     page.value++
     const pageUrlParams = getPageUrlParams(page.value)
     showLoading.value = true
-    getRentData(`${serviceStore.rentUrlParams}${pageUrlParams}`)
+    getRentDataEvent(`${serviceStore.rentUrlParams}${pageUrlParams}`)
       .then(({ data }) => {
         setData(data.rentList)
         window.scrollTo(0, 0)
