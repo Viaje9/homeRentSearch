@@ -8,9 +8,6 @@
         ></ProcessImg>
         <div class="p-2">
           <p class="fs-7">
-            {{ item.location }}
-          </p>
-          <p class="fs-7">
             圖 {{ item.currentImgIndex + 1 }}/{{ item.photo_list.length }} ＄ {{ item.price }} 樓
             {{ item.floor_str }}
             <template v-if="item.count !== 1">
@@ -18,7 +15,7 @@
             </template>
           </p>
           <a
-            class="fs-7 text-blue-400"
+            class="fs-7 text-blue-600"
             :href="`https://rent.591.com.tw/rent-detail-${item.post_id}.html`"
             target="_blank"
           >
@@ -74,7 +71,7 @@ import ProcessImg from '@/components/ProcessImg.vue'
 
 const router = useRouter()
 const serviceStore = useServiceStore()
-const { setData } = serviceStore
+const { setData, setRentUrlParams } = serviceStore
 const page = ref(0)
 const showLoading = ref(false)
 
@@ -117,6 +114,7 @@ const getPageUrlParams = (num) => {
 }
 
 function research() {
+  setRentUrlParams('')
   router.push({ name: 'home' })
 }
 </script>
