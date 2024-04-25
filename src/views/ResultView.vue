@@ -120,4 +120,5 @@ function research() {
   setRentUrlParams('')
   router.push({ name: 'home' })
 }
+window.scrollTo(0, 0)
 </script>

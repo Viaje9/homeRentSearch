@@ -1,5 +1,5 @@
 <template>
-  <div class="relative">
+  <div class="relative min-h-276">
     <div class="prev" @click="prevImg(postId)"><p class="arrow">&lt;</p></div>
     <div class="next" @click="nextImg(postId)"><p class="arrow">&gt;</p></div>
     <canvas class="max-w-full" ref="canvas"></canvas>
@@ -102,5 +102,8 @@ function processImg(url) {
   font-size: 42px;
   border-radius: 50%;
   background-color: #fff;
+}
+.min-h-276 {
+  min-height: 276px;
 }
 </style>
