@@ -7,7 +7,7 @@
 }
 
 .btn-outline-primary {
-  @apply outline-blue-600 outline text-black;
+  @apply outline-blue-600 outline outline-2 text-black;
 
   @media screen and (min-width: 640px) {
     &:hover {
@@ -39,7 +39,7 @@
 }
 
 .btn-outline-danger {
-  @apply outline-red-600 outline text-black mr-2 mt-2;
+  @apply outline-red-600 outline outline-2 text-black mr-2 mt-2;
 
   @media screen and (min-width: 640px) {
     &:hover {
@@ -67,7 +67,7 @@
 }
 
 .btn-outline-success {
-  @apply outline-green-600 outline text-black mr-2 mt-2;
+  @apply outline-green-600 outline outline-2 text-black mr-2 mt-2;
 
   @media screen and (min-width: 640px) {
     &:hover {
