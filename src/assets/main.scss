@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 .btn {
-  @apply text-white font-light py-1 px-2 rounded text-sm mr-1 mt-1;
+  @apply font-light py-1 px-2 rounded text-sm mr-2 mt-2;
 }
 
 .btn-outline-primary {
-  @apply bg-blue-600;
+  @apply outline-blue-600 outline text-black;
 
   @media screen and (min-width: 640px) {
     &:hover {
@@ -16,7 +16,7 @@
   }
 
   &.active {
-    @apply bg-blue-900;
+    @apply bg-blue-600 text-white;
   }
 
   &:disabled {
@@ -25,7 +25,7 @@
 }
 
 .btn-danger {
-  @apply bg-red-600 mt-0;
+  @apply bg-red-600 mt-0 text-white;
 
   @media screen and (min-width: 640px) {
     &:hover {
@@ -53,7 +53,7 @@
 }
 
 .btn-success {
-  @apply bg-green-600 mt-0;
+  @apply bg-green-600 mt-0 text-white;
 
   @media screen and (min-width: 640px) {
     &:hover {
