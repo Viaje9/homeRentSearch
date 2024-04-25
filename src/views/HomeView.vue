@@ -1,4 +1,11 @@
 <template>
+  <div v-if="showLoading" class="fixed w-screen h-svh opacity-50 top-0 left-0 bg-black">
+    <div class="flex items-center justify-center w-full h-full">
+      <div class="px-3 py-1 text-xl font-medium leading-none text-center text-white">
+        loading...
+      </div>
+    </div>
+  </div>
   <div>
     <div class="max-w-xl">
       <div class="mx-5 pt-5">
@@ -263,6 +270,7 @@ import { condition } from '@/assets/constant/rent.js'
 import { ref } from 'vue'
 import { useServiceStore } from '@/stores/service.js'
 import { useRouter } from 'vue-router'
+import { getRentData } from '@/apis/rent.js'
 
 const router = useRouter()
 
@@ -417,9 +425,12 @@ function onClickSubwayStation(value) {
 }
 
 const serviceStore = useServiceStore()
-const { setData } = serviceStore
+const { setData, setRecords, setRentUrlParams } = serviceStore
+
+const showLoading = ref(false)
 
 function submit() {
+  showLoading.value = true
   const kindParam = kind.value ? `kind=${kind.value}` : ''
   const rentPriceParam =
     rentPrice.value[0] && rentPrice.value[1]
@@ -457,17 +468,15 @@ function submit() {
     .filter((item) => item)
     .join('&')
 
-  fetch('http://localhost:3000/getRentData', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ urlParams })
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      setData(data)
+  getRentData(urlParams)
+    .then(({ data }) => {
+      setRentUrlParams(urlParams)
+      setData(data.rentList)
+      setRecords(data.records)
       router.push({ name: 'result' })
+    })
+    .finally(() => {
+      showLoading.value = false
     })
 }
 </script>

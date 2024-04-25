@@ -1,18 +1,24 @@
 <template>
-  <div class="flex flex-wrap pb-16 justify-center">
-    <template v-for="item in list" :key="item.post_id">
-      <div class="m-2" style="width: 18rem">
-        <div class="relative">
-          <div class="prev" @click="prev(item.post_id)"><p class="arrow">&lt;</p></div>
-          <div class="next" @click="next(item.post_id)"><p class="arrow">&gt;</p></div>
-          <img :src="item.photo_list[item.currentImgIndex]" />
-        </div>
+  <div class="flex flex-wrap pb-24 justify-center">
+    <template v-for="item in serviceStore.rentData" :key="item.post_id">
+      <div class="m-2" style="width: 22rem">
+        <ProcessImg
+          :post-id="item.post_id"
+          :img-url="item.photo_list[item.currentImgIndex]"
+        ></ProcessImg>
         <div class="p-2">
-          <p class="fs-5">
-            {{ item.address_img_title }} {{ item.currentImgIndex + 1 }}/{{ item.photo_list.length }}
+          <p class="fs-7">
+            {{ item.location }}
+          </p>
+          <p class="fs-7">
+            圖 {{ item.currentImgIndex + 1 }}/{{ item.photo_list.length }} ＄ {{ item.price }} 樓
+            {{ item.floor_str }}
+            <template v-if="item.count !== 1">
+              <p class="text-red-500 inline">重複次數 {{ item.count }}</p>
+            </template>
           </p>
           <a
-            class="fs-7"
+            class="fs-7 text-blue-400"
             :href="`https://rent.591.com.tw/rent-detail-${item.post_id}.html`"
             target="_blank"
           >
@@ -23,8 +29,14 @@
     </template>
   </div>
 
-  <div class="fixed bottom-0 left-0 z-50 w-full h-16 bg-slate-500 border-t border-gray-200">
-    <div class="grid h-full max-w-lg grid-cols-4 mx-auto font-medium">
+  <div class="fixed bottom-0 left-0 z-50 w-full h-24 bg-slate-500 border-t border-gray-200">
+    <div
+      class="h-1/2 flex items-center justify-center group text-white bg-slate-400"
+      @click="research()"
+    >
+      重新查詢
+    </div>
+    <div class="grid h-1/2 max-w-lg grid-cols-4 mx-auto font-medium">
       <button
         type="button"
         class="inline-flex flex-col items-center justify-center px-5 group text-white"
@@ -33,7 +45,7 @@
         上一頁
       </button>
       <span class="flex items-center justify-center col-span-2 text-white"
-        >第 {{ page + 1 }} 頁</span
+        >第 {{ page + 1 }}/{{ Math.floor(+serviceStore.records / 30) }} 頁</span
       >
       <button
         type="button"
@@ -44,111 +56,67 @@
       </button>
     </div>
   </div>
+  <div v-if="showLoading" class="fixed w-screen h-svh opacity-50 top-0 left-0 bg-black z-50">
+    <div class="flex items-center justify-center w-full h-full">
+      <div class="px-3 py-1 text-xl font-medium leading-none text-center text-white">
+        loading...
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
-// import { condition } from '@/assets/constant/rent.js'
-import data from '@/assets/json/20240422.json'
-import { reactive, ref } from 'vue'
+import { ref } from 'vue'
 import { useServiceStore } from '@/stores/service.js'
+import { useRouter } from 'vue-router'
+import { getRentData } from '@/apis/rent.js'
+import ProcessImg from '@/components/ProcessImg.vue'
 
+const router = useRouter()
 const serviceStore = useServiceStore()
-const { rentData } = serviceStore
-console.log(rentData)
-
+const { setData } = serviceStore
 const page = ref(0)
-
-const list = ref(reactive([]))
+const showLoading = ref(false)
 
 function prevPage() {
-  const pageLength = data.length
   if (page.value > 0) {
     page.value--
-  } else {
-    page.value = pageLength - 1
+    const pageUrlParams = getPageUrlParams(page.value)
+    showLoading.value = true
+    getRentData(`${serviceStore.rentUrlParams}${pageUrlParams}`)
+      .then(({ data }) => {
+        setData(data.rentList)
+        window.scrollTo(0, 0)
+      })
+      .finally(() => {
+        showLoading.value = false
+      })
   }
-
-  changePage(page.value)
 }
 
 function nextPage() {
-  const pageLength = data.length
+  const pageLength = Math.floor(+serviceStore.records / 30)
   if (page.value < pageLength - 1) {
     page.value++
-  } else {
-    page.value = 0
-  }
-  changePage(page.value)
-}
-function prev(id) {
-  const index = list.value.findIndex((item) => item.post_id === id)
-  const item = list.value[index]
-
-  if (item.currentImgIndex > 0) {
-    item.currentImgIndex--
-  } else {
-    item.currentImgIndex = item.photo_list.length - 1
+    const pageUrlParams = getPageUrlParams(page.value)
+    showLoading.value = true
+    getRentData(`${serviceStore.rentUrlParams}${pageUrlParams}`)
+      .then(({ data }) => {
+        setData(data.rentList)
+        window.scrollTo(0, 0)
+      })
+      .finally(() => {
+        showLoading.value = false
+      })
   }
 }
 
-function next(id) {
-  const index = list.value.findIndex((item) => item.post_id === id)
-  const item = list.value[index]
-
-  if (item.currentImgIndex < item.photo_list.length - 1) {
-    item.currentImgIndex++
-  } else {
-    item.currentImgIndex = 0
-  }
+const getPageUrlParams = (num) => {
+  const i = num * 30
+  return num ? `&firstRow=${i}` : ''
 }
 
-const changePage = (page) => {
-  const rawData = data[page].data.data
-    .map((item) => {
-      return {
-        ...item,
-        currentImgIndex: 0
-      }
-    })
-    .filter((item) => item.photo_list?.length > 0)
-  console.log(rawData)
-  list.value = reactive(rawData)
+function research() {
+  router.push({ name: 'home' })
 }
-
-changePage(page.value)
 </script>
-
-<style scoped>
-.prev {
-  display: flex;
-  align-items: center;
-  justify-content: start;
-  width: 50%;
-  position: absolute;
-  height: 100%;
-  top: 0;
-  left: 0;
-}
-
-.next {
-  display: flex;
-  align-items: center;
-  justify-content: end;
-  width: 50%;
-  position: absolute;
-  height: 100%;
-  top: 0;
-  right: 0;
-}
-
-.arrow {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 40px;
-  height: 40px;
-  font-size: 42px;
-  border-radius: 50%;
-  background-color: #fff;
-}
-</style>
