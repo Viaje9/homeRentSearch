@@ -8,8 +8,8 @@
         ></ProcessImg>
         <div class="p-2">
           <p class="fs-7">
-            圖 {{ item.currentImgIndex + 1 }}/{{ item.photo_list.length }} ＄ {{ item.price }} 樓
-            {{ item.floor_str }}
+            圖{{ item.currentImgIndex + 1 }}/{{ item.photo_list.length }} ＄{{ item.price }}
+            {{ item.floor_str }} {{ item.area }}坪
             <template v-if="item.count !== 1">
               <p class="text-red-500 inline">重複次數 {{ item.count }}</p>
             </template>

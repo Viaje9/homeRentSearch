@@ -302,7 +302,7 @@ import { getRentData } from '@/apis/rent.js'
 
 const router = useRouter()
 
-const order = ref(localStorage.getItem('order') || '2')
+const order = ref(localStorage.getItem('order'))
 function onClickOrder(value) {
   if (order.value === value) {
     order.value = null
