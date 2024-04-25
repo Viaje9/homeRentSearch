@@ -10,13 +10,28 @@
     <div class="max-w-xl">
       <div class="mx-5 pt-5">
         <div class="group">
+          <div class="label">排序</div>
+          <div class="btnGroup">
+            <button
+              v-for="item in condition.order"
+              type="button"
+              class="btn btn-outline-primary"
+              :key="item.value"
+              :class="{ active: order === item.param }"
+              @click="onClickOrder(item.param)"
+            >
+              {{ item.name }}
+            </button>
+          </div>
+        </div>
+        <div class="group">
           <div class="label">關鍵字</div>
           <div class="input-group">
             <input
               :value="keywords"
               @change="onChangeKeywords($event)"
               type="text"
-              placeholder="關鍵字"
+              placeholder="請輸入..."
               class="form-control"
             />
             <button type="button" class="btn btn-danger" @click="resetKeywords()">Reset</button>
@@ -287,7 +302,18 @@ import { getRentData } from '@/apis/rent.js'
 
 const router = useRouter()
 
-const keywords = ref(localStorage.getItem('keywords') || '')
+const order = ref(localStorage.getItem('order') || '2')
+function onClickOrder(value) {
+  if (order.value === value) {
+    order.value = null
+  } else {
+    order.value = value
+  }
+
+  localStorage.setItem('order', order.value)
+}
+
+const keywords = ref(localStorage.getItem('keywords') || null)
 function onChangeKeywords(event) {
   keywords.value = event.target.value
   localStorage.setItem('keywords', keywords.value)
@@ -454,6 +480,8 @@ const showLoading = ref(false)
 
 function submit() {
   showLoading.value = true
+
+  const orderParam = order.value
   const keywordsParam = keywords.value ? `keywords=${encodeURIComponent(keywords.value)}` : ''
   const kindParam = kind.value ? `kind=${kind.value}` : ''
   const rentPriceParam =
@@ -475,6 +503,7 @@ function submit() {
     : ''
 
   const urlParams = [
+    orderParam,
     keywordsParam,
     kindParam,
     rentPriceParam,

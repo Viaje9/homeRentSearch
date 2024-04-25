@@ -1430,6 +1430,15 @@ taipei[346] = [
 ]
 
 const condition = {
+  // 排序
+  order: [
+    { name: '預設排序', value: '1', param: '' },
+    { name: '最新', value: '2', param: 'order=posttime&orderType=desc' },
+    { name: '租金最高', value: '3', param: 'order=money&orderType=desc' },
+    { name: '租金最低', value: '4', param: 'order=money&orderType=asc' },
+    { name: '坪數最大', value: '5', param: 'order=area&orderType=desc' },
+    { name: '坪數最小', value: '6', param: 'order=area&orderType=desc' }
+  ],
   // 類型
   kind: [
     { name: '整層住家', value: '1' },
