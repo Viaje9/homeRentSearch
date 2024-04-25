@@ -468,7 +468,7 @@ function submit() {
     .filter((item) => item)
     .join('&')
 
-  getRentData(urlParams)
+  getRentData(urlParams ? `&${urlParams}` : '')
     .then(({ data }) => {
       setRentUrlParams(urlParams)
       setData(data.rentList)
