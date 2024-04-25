@@ -10,6 +10,19 @@
     <div class="max-w-xl">
       <div class="mx-5 pt-5">
         <div class="group">
+          <div class="label">關鍵字</div>
+          <div class="input-group">
+            <input
+              :value="keywords"
+              @change="onChangeKeywords($event)"
+              type="text"
+              placeholder="關鍵字"
+              class="form-control"
+            />
+            <button type="button" class="btn btn-danger" @click="resetKeywords()">Reset</button>
+          </div>
+        </div>
+        <div class="group">
           <div class="label">類型</div>
           <div class="btnGroup">
             <button
@@ -274,6 +287,16 @@ import { getRentData } from '@/apis/rent.js'
 
 const router = useRouter()
 
+const keywords = ref(localStorage.getItem('keywords') || '')
+function onChangeKeywords(event) {
+  keywords.value = event.target.value
+  localStorage.setItem('keywords', keywords.value)
+}
+function resetKeywords() {
+  keywords.value = ''
+  localStorage.setItem('keywords', keywords.value)
+}
+
 const kind = ref(localStorage.getItem('kind') || null)
 function onClickKind(value) {
   if (kind.value === value) {
@@ -431,6 +454,7 @@ const showLoading = ref(false)
 
 function submit() {
   showLoading.value = true
+  const keywordsParam = keywords.value ? `keywords=${encodeURIComponent(keywords.value)}` : ''
   const kindParam = kind.value ? `kind=${kind.value}` : ''
   const rentPriceParam =
     rentPrice.value[0] && rentPrice.value[1]
@@ -451,6 +475,7 @@ function submit() {
     : ''
 
   const urlParams = [
+    keywordsParam,
     kindParam,
     rentPriceParam,
     roomParam,
