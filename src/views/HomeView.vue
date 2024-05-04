@@ -221,16 +221,29 @@
         <div class="group">
           <div class="label">地點</div>
           <div class="mb-2">
+            <button
+              v-for="item in cityList"
+              :key="item.id"
+              type="button"
+              class="btn btn-outline-primary"
+              :class="{ active: city === item.id }"
+              @click="onClickCity(item.id)"
+            >
+              {{ item.txt }}
+            </button>
+          </div>
+          <div v-if="city" class="mb-2">
             <div class="btn-group" role="group">
               <button
                 type="button"
                 class="btn btn-outline-primary"
-                :class="{ active: locationType === 'city' }"
-                @click="onClickLocationType('city')"
+                :class="{ active: locationType === 'township' }"
+                @click="onClickLocationType('township')"
               >
-                鄉鎮
+                鄉鎮市區
               </button>
               <button
+                v-if="checkHasSubway"
                 type="button"
                 class="btn btn-outline-primary"
                 :class="{ active: locationType === 'subway' }"
@@ -240,50 +253,52 @@
               </button>
             </div>
           </div>
-          <div v-if="locationType === 'city'" class="mb-2">
-            <button
-              v-for="item in condition.section"
-              :key="item.value"
-              type="button"
-              class="btn btn-outline-primary text-nowrap"
-              :disabled="city.length === 4 && !city.includes(item.value)"
-              :class="{
-                active: city.includes(item.value),
-                disabled: city.length === 4 && !city.includes(item.value)
-              }"
-              @click="onClickCity(item.value)"
-            >
-              {{ item.name }}
-            </button>
-          </div>
-          <div v-if="locationType === 'subway'" class="mb-2">
-            <button
-              v-for="item in condition.subwayRoute"
-              :key="item.pid"
-              type="button"
-              :class="{ active: subwayRoute === item.pid }"
-              class="btn btn-outline-danger text-nowrap"
-              @click="onClickSubwayRoute(item.pid)"
-            >
-              {{ item.name }}
-            </button>
-          </div>
-          <div v-if="locationType === 'subway' && subwayRoute" class="mb-2">
-            <button
-              v-for="item in condition.taipei[subwayRoute]"
-              :key="item.nid"
-              type="button"
-              :disabled="subwayStation.length === 5 && !subwayStation.includes(item.nid)"
-              :class="{
-                active: subwayStation.includes(item.nid),
-                disabled: subwayStation.length === 5 && !subwayStation.includes(item.nid)
-              }"
-              class="btn btn-outline-success text-nowrap"
-              @click="onClickSubwayStation(item.nid)"
-            >
-              {{ item.name }}
-            </button>
-          </div>
+          <template v-if="city">
+            <div v-if="locationType === 'township'" class="mb-2">
+              <button
+                v-for="item in areaList"
+                :key="item.value"
+                type="button"
+                class="btn btn-outline-primary text-nowrap"
+                :class="{
+                  active: township.includes(item.value),
+                  max: township.length >= townshipDisabledLength && !township.includes(item.value)
+                }"
+                @click="onClickTownship(item.value)"
+              >
+                {{ item.label }}
+              </button>
+            </div>
+            <div v-if="locationType === 'subway'" class="mb-2">
+              <button
+                v-for="item in subwayRouteList"
+                :key="item.pid"
+                type="button"
+                :class="{ active: subwayRoute === item.pid }"
+                class="btn btn-outline-danger text-nowrap"
+                @click="onClickSubwayRoute(item.pid)"
+              >
+                {{ item.name }}
+              </button>
+            </div>
+            <div v-if="locationType === 'subway' && subwayRoute" class="mb-2">
+              <button
+                v-for="item in subwayStationList"
+                :key="item.nid"
+                type="button"
+                :class="{
+                  active: subwayStation.includes(item.nid),
+                  max:
+                    subwayStation.length === subwayStationDisabledLength &&
+                    !subwayStation.includes(item.nid)
+                }"
+                class="btn btn-outline-success text-nowrap"
+                @click="onClickSubwayStation(item.nid)"
+              >
+                {{ item.name }}
+              </button>
+            </div>
+          </template>
         </div>
       </div>
     </div>
@@ -295,11 +310,36 @@
 
 <script setup>
 import { condition } from '@/assets/constant/rent.js'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useServiceStore } from '@/stores/service.js'
 import { useRouter } from 'vue-router'
+import cityList from '@/assets/constant/city.js'
+import areaCascade from '@/assets/constant/areaCascade'
+import { subwayRoutes, subwayStations } from '@/assets/constant/subway.js'
 
 const router = useRouter()
+
+const checkHasSubway = computed(() => {
+  return cityList.some((item) => {
+    if (item.id === city.value) {
+      return !!item.subway
+    }
+    return false
+  })
+})
+
+const areaList = computed(() => {
+  return areaCascade.find((item) => item.value === city.value).children
+})
+
+const subwayRouteList = computed(() => {
+  const subwayIndex = cityList.find((item) => item.id === city.value).subway
+  return subwayRoutes[subwayIndex]
+})
+
+const subwayStationList = computed(() => {
+  return subwayStations[subwayRoute.value]
+})
 
 const order = ref(localStorage.getItem('order'))
 function onClickOrder(value) {
@@ -435,26 +475,56 @@ function onClickNotice(value) {
   localStorage.setItem('notice', JSON.stringify(notice.value))
 }
 
-const locationType = ref(localStorage.getItem('locationType') || 'city')
-function onClickLocationType(value) {
-  locationType.value = value
-  city.value = []
+const city = ref(localStorage.getItem('city') || '1')
+function onClickCity(value) {
+  if (city.value === value) {
+    city.value = ''
+  } else {
+    city.value = value
+  }
+  locationType.value = 'township'
+  township.value = []
   subwayRoute.value = ''
   subwayStation.value = []
+
+  localStorage.setItem('city', city.value)
   localStorage.setItem('locationType', locationType.value)
-  localStorage.setItem('city', JSON.stringify(city.value))
+  localStorage.setItem('township', JSON.stringify(township.value))
   localStorage.setItem('subwayRoute', subwayRoute.value)
   localStorage.setItem('subwayStation', JSON.stringify(subwayStation.value))
 }
 
-const city = ref(JSON.parse(localStorage.getItem('city')) || [])
-function onClickCity(value) {
-  if (city.value.includes(value)) {
-    city.value = city.value.filter((item) => item !== value)
-  } else {
-    city.value.push(value)
+const locationType = ref(localStorage.getItem('locationType') || 'township')
+function onClickLocationType(value) {
+  locationType.value = value
+  township.value = []
+  subwayRoute.value = ''
+  subwayStation.value = []
+  localStorage.setItem('locationType', locationType.value)
+  localStorage.setItem('township', JSON.stringify(township.value))
+  localStorage.setItem('subwayRoute', subwayRoute.value)
+  localStorage.setItem('subwayStation', JSON.stringify(subwayStation.value))
+
+  if (subwayRouteList.value?.length === 1) {
+    const pid = subwayRouteList.value[0].pid
+    onClickSubwayRoute(pid)
   }
-  localStorage.setItem('city', JSON.stringify(city.value))
+}
+
+const townshipDisabledLength = 4
+const township = ref(JSON.parse(localStorage.getItem('township')) || [])
+function onClickTownship(value) {
+  if (township.value.length >= townshipDisabledLength && !township.value.includes(value)) {
+    township.value[township.value.length - 1] = value
+  } else {
+    if (township.value.includes(value)) {
+      township.value = township.value.filter((item) => item !== value)
+    } else {
+      township.value.push(value)
+    }
+  }
+
+  localStorage.setItem('township', JSON.stringify(township.value))
 }
 
 const subwayRoute = ref(localStorage.getItem('subwayRoute') || '')
@@ -465,12 +535,20 @@ function onClickSubwayRoute(value) {
   localStorage.setItem('subwayStation', JSON.stringify(subwayStation.value))
 }
 
+const subwayStationDisabledLength = 5
 const subwayStation = ref(JSON.parse(localStorage.getItem('subwayStation')) || [])
 function onClickSubwayStation(value) {
-  if (subwayStation.value.includes(value)) {
-    subwayStation.value = subwayStation.value.filter((item) => item !== value)
+  if (
+    subwayStation.value.length >= subwayStationDisabledLength &&
+    !subwayStation.value.includes(value)
+  ) {
+    subwayStation.value[subwayStation.value.length - 1] = value
   } else {
-    subwayStation.value.push(value)
+    if (subwayStation.value.includes(value)) {
+      subwayStation.value = subwayStation.value.filter((item) => item !== value)
+    } else {
+      subwayStation.value.push(value)
+    }
   }
   localStorage.setItem('subwayStation', JSON.stringify(subwayStation.value))
 }
@@ -480,11 +558,19 @@ const { setData, setRecords, setRentUrlParams, getRentDataEvent } = serviceStore
 
 const showLoading = ref(false)
 
+const getKeywordParams = () => {
+  const cityText = cityList.find((item) => item.id === city.value).txt
+  return keywords.value
+    ? `keywords=${encodeURIComponent(keywords.value)}`
+    : `keywords=${encodeURIComponent(cityText)}`
+}
+
 function submit() {
   showLoading.value = true
 
+  const cityParam = city.value ? `region=${city.value}` : ''
   const orderParam = order.value
-  const keywordsParam = keywords.value ? `keywords=${encodeURIComponent(keywords.value)}` : ''
+  const keywordsParam = getKeywordParams()
   const kindParam = kind.value ? `kind=${kind.value}` : ''
   const rentPriceParam =
     rentPrice.value[0] && rentPrice.value[1]
@@ -499,13 +585,16 @@ function submit() {
   const optionParam = option.value.length ? `option=${option.value.join(',')}` : ''
   const fitmentParam = fitment.value.length ? `multiFitment=${fitment.value.join(',')}` : ''
   const noticeParam = notice.value.length ? `multiNotice=${notice.value.join(',')}` : ''
-  const cityParam = city.value.length ? `searchtype=1&section=${city.value.join(',')}` : ''
+  const townshipParam = township.value.length
+    ? `searchtype=1&section=${township.value.join(',')}`
+    : ''
   const subwayRouteParam = subwayRoute.value ? `searchtype=4&mrtline=${subwayRoute.value}` : ''
   const subwayStationParam = subwayStation.value.length
     ? `mrtcoods=${subwayStation.value.join(',')}`
     : ''
 
   const urlParams = [
+    cityParam,
     orderParam,
     keywordsParam,
     kindParam,
@@ -519,7 +608,7 @@ function submit() {
     optionParam,
     fitmentParam,
     noticeParam,
-    cityParam,
+    townshipParam,
     subwayRouteParam,
     subwayStationParam
   ]
