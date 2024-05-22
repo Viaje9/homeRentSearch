@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-wrap pb-24 justify-center">
-    <template v-for="item in serviceStore.rentData" :key="item.post_id">
+    <template v-for="item in filterRentData" :key="item.post_id">
       <div class="m-2" style="width: 22rem">
         <ProcessImg
           :post-id="item.post_id"
@@ -31,12 +31,26 @@
   </div>
 
   <div class="fixed bottom-0 left-0 z-50 w-full h-28 pb-4 bg-slate-500 border-t border-gray-200">
-    <div
-      class="h-1/2 flex items-center justify-center group text-white bg-slate-400"
-      @click="research()"
-    >
-      重新查詢
+    <div class="grid h-1/2 max-w-lg grid-cols-2 mx-auto font-medium">
+      <button
+        type="button"
+        class="inline-flex flex-col items-center justify-center bg-slate-400 px-5 text-white"
+        @click="research()"
+      >
+        重新查詢
+      </button>
+      <span
+        class="inline-flex flex-col items-center justify-center px-5 text-white"
+        @click="showRepeat = !showRepeat"
+        :class="{
+          'bg-blue-500': showRepeat,
+          'bg-gray-500': !showRepeat
+        }"
+      >
+        顯示重複
+      </span>
     </div>
+
     <div class="grid h-1/2 max-w-lg grid-cols-4 mx-auto font-medium">
       <button
         type="button"
@@ -67,7 +81,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useServiceStore } from '@/stores/service.js'
 import { useRouter } from 'vue-router'
 import ProcessImg from '@/components/ProcessImg.vue'
@@ -77,6 +91,19 @@ const serviceStore = useServiceStore()
 const { setData, setRentUrlParams, getRentDataEvent } = serviceStore
 const page = ref(0)
 const showLoading = ref(false)
+const showRepeat = ref(false)
+
+const filterRentData = computed(() => {
+  return serviceStore.rentData.reduce((acc, obj) => {
+    let existingObj = acc.find((item) => item.location === obj.location)
+    if (existingObj && !showRepeat.value) {
+      existingObj.count++
+    } else {
+      acc.push({ ...obj, count: 1 })
+    }
+    return acc
+  }, [])
+})
 
 function prevPage() {
   if (page.value > 0) {

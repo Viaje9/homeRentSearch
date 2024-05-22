@@ -17,15 +17,6 @@ export const useServiceStore = defineStore('service', () => {
         }
       })
       .filter((item) => item.photo_list?.length > 0)
-      .reduce((acc, obj) => {
-        let existingObj = acc.find((item) => item.location === obj.location)
-        if (existingObj) {
-          existingObj.count++
-        } else {
-          acc.push({ ...obj, count: 1 })
-        }
-        return acc
-      }, [])
   }
 
   function setRecords(val) {
