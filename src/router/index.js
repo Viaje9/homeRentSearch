@@ -13,6 +13,11 @@ const router = createRouter({
       path: '/result',
       name: 'result',
       component: () => import('../views/ResultView.vue')
+    },
+    {
+      path: '/map',
+      name: 'map',
+      component: () => import('../views/MapView.vue')
     }
   ]
 })

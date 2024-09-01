@@ -12,6 +12,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@geoman-io/leaflet-geoman-free": "^2.17.0",
     "axios": "^1.6.8",
     "pinia": "^2.1.7",
     "vue": "^3.4.21",
@@ -25,6 +26,7 @@
     "autoprefixer": "^10.4.19",
     "eslint": "^8.57.0",
     "eslint-plugin-vue": "^9.23.0",
+    "leaflet": "^1.9.4",
     "postcss": "^8.4.38",
     "prettier": "^3.2.5",
     "sass": "^1.75.0",

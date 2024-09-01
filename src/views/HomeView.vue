@@ -6,6 +6,9 @@
       </div>
     </div>
   </div>
+  <div class="max-w-xl">
+    <button type="button" class="w-full h-10 bg-blue-500 text-white" @click="goToMap()">Map</button>
+  </div>
   <div>
     <div class="max-w-xl">
       <div class="mx-5 pt-5">
@@ -625,6 +628,10 @@ function submit() {
     .finally(() => {
       showLoading.value = false
     })
+}
+
+function goToMap() {
+  router.push({ name: 'map' })
 }
 </script>
 

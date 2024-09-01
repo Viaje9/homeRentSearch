@@ -25,6 +25,9 @@
           >
             {{ item.location }}
           </a>
+          <div class="flex justify-end">
+            <CheckInsideArea :post-id="item.post_id"></CheckInsideArea>
+          </div>
         </div>
       </div>
     </template>
@@ -85,6 +88,7 @@ import { ref, computed } from 'vue'
 import { useServiceStore } from '@/stores/service.js'
 import { useRouter } from 'vue-router'
 import ProcessImg from '@/components/ProcessImg.vue'
+import CheckInsideArea from '@/components/CheckInsideArea.vue'
 
 const router = useRouter()
 const serviceStore = useServiceStore()
@@ -147,5 +151,4 @@ function research() {
   setRentUrlParams('')
   router.push({ name: 'home' })
 }
-window.scrollTo(0, 0)
 </script>
