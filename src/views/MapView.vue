@@ -75,8 +75,10 @@ onMounted(() => {
     removalMode: true
   })
 
-  map.on('pm:create', () => {
-    saveDrawnItemsToLocal()
+  map.on('pm:create', (e) => {
+    e.layer.on('pm:edit', () => {
+      saveDrawnItemsToLocal()
+    })
   })
 
   map.on('pm:remove', () => {
