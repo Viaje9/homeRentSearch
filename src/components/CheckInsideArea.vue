@@ -53,15 +53,14 @@ function checkInsideArea() {
         lat: res.data.lat,
         lng: res.data.lng
       }
-      console.log(latLng)
       const drawnItemsData = JSON.parse(localStorage.getItem('drawnItems'))
       if (drawnItemsData) {
-        drawnItemsData.forEach((geoJson) => {
+        isInside.value = drawnItemsData.some((geoJson) => {
           const layer = L.geoJSON(geoJson).getLayers()[0]
           if (layer.getBounds().contains(latLng)) {
-            isInside.value = true
+            return true
           } else {
-            isInside.value = false
+            return false
           }
         })
       }
