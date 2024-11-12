@@ -15,14 +15,8 @@
         <div class="group">
           <div class="label">排序</div>
           <div class="btnGroup">
-            <button
-              v-for="item in condition.order"
-              type="button"
-              class="btn btn-outline-primary"
-              :key="item.value"
-              :class="{ active: order === item.param }"
-              @click="onClickOrder(item.param)"
-            >
+            <button v-for="item in condition.order" type="button" class="btn btn-outline-primary" :key="item.value"
+              :class="{ active: order === item.value }" @click="onClickOrder(item.value)">
               {{ item.name }}
             </button>
           </div>
@@ -30,27 +24,16 @@
         <div class="group">
           <div class="label">關鍵字</div>
           <div class="input-group">
-            <input
-              :value="keywords"
-              @change="onChangeKeywords($event)"
-              type="text"
-              placeholder="請輸入..."
-              class="form-control"
-            />
+            <input :value="keywords" @change="onChangeKeywords($event)" type="text" placeholder="請輸入..."
+              class="form-control" />
             <button type="button" class="btn btn-danger" @click="resetKeywords()">Reset</button>
           </div>
         </div>
         <div class="group">
           <div class="label">類型</div>
           <div class="btnGroup">
-            <button
-              v-for="item in condition.kind"
-              type="button"
-              class="btn btn-outline-primary"
-              :key="item.value"
-              :class="{ active: kind === item.value }"
-              @click="onClickKind(item.value)"
-            >
+            <button v-for="item in condition.kind" type="button" class="btn btn-outline-primary" :key="item.value"
+              :class="{ active: kind === item.value }" @click="onClickKind(item.value)">
               {{ item.name }}
             </button>
           </div>
@@ -58,36 +41,18 @@
         <div class="group">
           <span class="label">租金</span>
           <div class="input-group">
-            <input
-              :value="rentPrice[0]"
-              @change="onChangeRentPrice($event, 0)"
-              inputmode="decimal"
-              type="number"
-              placeholder="min"
-              class="form-control"
-            />
-            <input
-              :value="rentPrice[1]"
-              @change="onChangeRentPrice($event, 1)"
-              inputmode="decimal"
-              type="number"
-              placeholder="max"
-              class="form-control"
-            />
+            <input :value="rentPrice[0]" @change="onChangeRentPrice($event, 0)" inputmode="decimal" type="number"
+              placeholder="min" class="form-control" />
+            <input :value="rentPrice[1]" @change="onChangeRentPrice($event, 1)" inputmode="decimal" type="number"
+              placeholder="max" class="form-control" />
             <button type="button" class="btn btn-danger" @click="resetRentPrice()">Reset</button>
           </div>
         </div>
         <div class="group" v-if="kind === '1'">
           <div class="label">格局</div>
           <div class="btn-group" role="group">
-            <button
-              v-for="item in condition.multiRoom"
-              type="button"
-              class="btn btn-outline-primary"
-              :key="item.value"
-              :class="{ active: room.includes(item.value) }"
-              @click="onClickRoom(item.value)"
-            >
+            <button v-for="item in condition.multiRoom" type="button" class="btn btn-outline-primary" :key="item.value"
+              :class="{ active: room.includes(item.value) }" @click="onClickRoom(item.value)">
               {{ item.name }}
             </button>
           </div>
@@ -95,14 +60,8 @@
         <div class="group">
           <div class="label">特色</div>
           <div class="btn-group" role="group">
-            <button
-              v-for="item in condition.other"
-              type="button"
-              class="btn btn-outline-primary"
-              :key="item.value"
-              :class="{ active: other.includes(item.value) }"
-              @click="onClickOther(item.value)"
-            >
+            <button v-for="item in condition.other" type="button" class="btn btn-outline-primary" :key="item.value"
+              :class="{ active: other.includes(item.value) }" @click="onClickOther(item.value)">
               {{ item.name }}
             </button>
           </div>
@@ -110,14 +69,8 @@
         <div class="group">
           <div class="label">型態</div>
           <div class="btn-group" role="group">
-            <button
-              v-for="item in condition.shape"
-              type="button"
-              class="btn btn-outline-primary"
-              :key="item.value"
-              :class="{ active: shape === item.value }"
-              @click="onClickShape(item.value)"
-            >
+            <button v-for="item in condition.shape" type="button" class="btn btn-outline-primary" :key="item.value"
+              :class="{ active: shape === item.value }" @click="onClickShape(item.value)">
               {{ item.name }}
             </button>
           </div>
@@ -125,36 +78,18 @@
         <div class="group">
           <span class="label">坪數</span>
           <div class="input-group">
-            <input
-              :value="area[0]"
-              @change="onChangeArea($event, 0)"
-              inputmode="decimal"
-              type="number"
-              placeholder="min"
-              class="form-control"
-            />
-            <input
-              :value="area[1]"
-              @change="onChangeArea($event, 1)"
-              inputmode="decimal"
-              type="number"
-              placeholder="max"
-              class="form-control"
-            />
+            <input :value="area[0]" @change="onChangeArea($event, 0)" inputmode="decimal" type="number"
+              placeholder="min" class="form-control" />
+            <input :value="area[1]" @change="onChangeArea($event, 1)" inputmode="decimal" type="number"
+              placeholder="max" class="form-control" />
             <button type="button" class="btn btn-danger" @click="resetArea()">Reset</button>
           </div>
         </div>
         <div class="group">
           <div class="label">樓層</div>
           <div class="btn-group" role="group">
-            <button
-              v-for="item in condition.floor"
-              type="button"
-              class="btn btn-outline-primary"
-              :key="item.value"
-              :class="{ active: floor === item.value }"
-              @click="onClickFloor(item.value)"
-            >
+            <button v-for="item in condition.floor" type="button" class="btn btn-outline-primary" :key="item.value"
+              :class="{ active: floor === item.value }" @click="onClickFloor(item.value)">
               {{ item.name }}
             </button>
           </div>
@@ -162,14 +97,8 @@
         <div class="group">
           <div class="label">衛浴</div>
           <div class="btn-group" role="group">
-            <button
-              v-for="item in condition.multiToilet"
-              type="button"
-              class="btn btn-outline-primary"
-              :key="item.value"
-              :class="{ active: toilet.includes(item.value) }"
-              @click="onClickToilet(item.value)"
-            >
+            <button v-for="item in condition.multiToilet" type="button" class="btn btn-outline-primary"
+              :key="item.value" :class="{ active: toilet.includes(item.value) }" @click="onClickToilet(item.value)">
               {{ item.name }}
             </button>
           </div>
@@ -177,14 +106,8 @@
         <div class="group">
           <div class="label">設備</div>
           <div class="btn-group" role="group">
-            <button
-              v-for="item in condition.option"
-              type="button"
-              class="btn btn-outline-primary"
-              :key="item.value"
-              :class="{ active: option.includes(item.value) }"
-              @click="onClickOption(item.value)"
-            >
+            <button v-for="item in condition.option" type="button" class="btn btn-outline-primary" :key="item.value"
+              :class="{ active: option.includes(item.value) }" @click="onClickOption(item.value)">
               {{ item.name }}
             </button>
           </div>
@@ -192,14 +115,8 @@
         <div class="group">
           <div class="label">裝潢</div>
           <div class="btn-group" role="group">
-            <button
-              v-for="item in condition.multiFitment"
-              type="button"
-              class="btn btn-outline-primary"
-              :key="item.value"
-              :class="{ active: fitment.includes(item.value) }"
-              @click="onClickFitment(item.value)"
-            >
+            <button v-for="item in condition.multiFitment" type="button" class="btn btn-outline-primary"
+              :key="item.value" :class="{ active: fitment.includes(item.value) }" @click="onClickFitment(item.value)">
               {{ item.name }}
             </button>
           </div>
@@ -207,14 +124,8 @@
         <div class="group">
           <div class="label">須知</div>
           <div class="btn-group" role="group">
-            <button
-              v-for="item in condition.multiNotice"
-              type="button"
-              class="btn btn-outline-primary"
-              :key="item.value"
-              :class="{ active: notice.includes(item.value) }"
-              @click="onClickNotice(item.value)"
-            >
+            <button v-for="item in condition.multiNotice" type="button" class="btn btn-outline-primary"
+              :key="item.value" :class="{ active: notice.includes(item.value) }" @click="onClickNotice(item.value)">
               {{ item.name }}
             </button>
           </div>
@@ -224,80 +135,47 @@
         <div class="group">
           <div class="label">地點</div>
           <div class="mb-2">
-            <button
-              v-for="item in cityList"
-              :key="item.id"
-              type="button"
-              class="btn btn-outline-primary"
-              :class="{ active: city === item.id }"
-              @click="onClickCity(item.id)"
-            >
+            <button v-for="item in cityList" :key="item.id" type="button" class="btn btn-outline-primary"
+              :class="{ active: city === item.id }" @click="onClickCity(item.id)">
               {{ item.txt }}
             </button>
           </div>
           <div v-if="city" class="mb-2">
             <div class="btn-group" role="group">
-              <button
-                type="button"
-                class="btn btn-outline-primary"
-                :class="{ active: locationType === 'township' }"
-                @click="onClickLocationType('township')"
-              >
+              <button type="button" class="btn btn-outline-primary" :class="{ active: locationType === 'township' }"
+                @click="onClickLocationType('township')">
                 鄉鎮市區
               </button>
-              <button
-                v-if="checkHasSubway"
-                type="button"
-                class="btn btn-outline-primary"
-                :class="{ active: locationType === 'subway' }"
-                @click="onClickLocationType('subway')"
-              >
+              <button v-if="checkHasSubway" type="button" class="btn btn-outline-primary"
+                :class="{ active: locationType === 'subway' }" @click="onClickLocationType('subway')">
                 捷運線
               </button>
             </div>
           </div>
           <template v-if="city">
             <div v-if="locationType === 'township'" class="mb-2">
-              <button
-                v-for="item in areaList"
-                :key="item.value"
-                type="button"
-                class="btn btn-outline-primary text-nowrap"
-                :class="{
+              <button v-for="item in areaList" :key="item.value" type="button"
+                class="btn btn-outline-primary text-nowrap" :class="{
                   active: township.includes(item.value),
                   max: township.length >= townshipDisabledLength && !township.includes(item.value)
-                }"
-                @click="onClickTownship(item.value)"
-              >
+                }" @click="onClickTownship(item.value)">
                 {{ item.label }}
               </button>
             </div>
             <div v-if="locationType === 'subway'" class="mb-2">
-              <button
-                v-for="item in subwayRouteList"
-                :key="item.pid"
-                type="button"
-                :class="{ active: subwayRoute === item.pid }"
-                class="btn btn-outline-danger text-nowrap"
-                @click="onClickSubwayRoute(item.pid)"
-              >
+              <button v-for="item in subwayRouteList" :key="item.pid" type="button"
+                :class="{ active: subwayRoute === item.pid }" class="btn btn-outline-danger text-nowrap"
+                @click="onClickSubwayRoute(item.pid)">
                 {{ item.name }}
               </button>
             </div>
             <div v-if="locationType === 'subway' && subwayRoute" class="mb-2">
-              <button
-                v-for="item in subwayStationList"
-                :key="item.nid"
-                type="button"
-                :class="{
-                  active: subwayStation.includes(item.nid),
-                  max:
-                    subwayStation.length === subwayStationDisabledLength &&
-                    !subwayStation.includes(item.nid)
-                }"
-                class="btn btn-outline-success text-nowrap"
-                @click="onClickSubwayStation(item.nid)"
-              >
+              <button v-for="item in subwayStationList" :key="item.nid" type="button" :class="{
+                active: subwayStation.includes(item.nid),
+                max:
+                  subwayStation.length === subwayStationDisabledLength &&
+                  !subwayStation.includes(item.nid)
+              }" class="btn btn-outline-success text-nowrap" @click="onClickSubwayStation(item.nid)">
                 {{ item.name }}
               </button>
             </div>
@@ -557,77 +435,78 @@ function onClickSubwayStation(value) {
 }
 
 const serviceStore = useServiceStore()
-const { setData, setRecords, setRentUrlParams, getRentDataEvent } = serviceStore
+const { setData, setRecords, setRentUrlParams, getRentDataEventV2 } = serviceStore
+// console.log(serviceStore)
+
 
 const showLoading = ref(false)
 
+const getOrderParams = () => {
+  switch (order.value) {
+    case '1':
+      return {}
+    case '2':
+      return { order: 'posttime', orderType: 'desc' }
+    case '3':
+      return { order: 'money', orderType: 'desc' }
+    case '4':
+      return { order: 'money', orderType: 'asc' }
+    case '5':
+      return { order: 'area', orderType: 'desc' }
+    case '6':
+      return { order: 'area', orderType: 'asc' }
+    default:
+      return {}
+  }
+}
+
 const getKeywordParams = () => {
   const cityText = cityList.find((item) => item.id === city.value).txt
-  return keywords.value
-    ? `keywords=${encodeURIComponent(keywords.value)}`
-    : `keywords=${encodeURIComponent(cityText)}`
+  return keywords.value ? keywords.value : cityText
 }
 
 function submit() {
   showLoading.value = true
 
-  const cityParam = city.value ? `region=${city.value}` : ''
-  const orderParam = order.value
-  const keywordsParam = getKeywordParams()
-  const kindParam = kind.value ? `kind=${kind.value}` : ''
-  const rentPriceParam =
-    rentPrice.value[0] && rentPrice.value[1]
-      ? `rentprice=${rentPrice.value[0]},${rentPrice.value[1]}`
-      : ''
-  const roomParam = room.value.length ? `multiRoom=${room.value.join(',')}` : ''
-  const otherParam = other.value.length ? `other=${other.value.join(',')}` : ''
-  const shapeParam = shape.value ? `shape=${shape.value}` : ''
-  const areaParam = area.value[0] && area.value[1] ? `area=${area.value[0]},${area.value[1]}` : ''
-  const floorParam = floor.value ? `floor=${floor.value}` : ''
-  const toiletParam = toilet.value.length ? `multiToilet=${toilet.value.join(',')}` : ''
-  const optionParam = option.value.length ? `option=${option.value.join(',')}` : ''
-  const fitmentParam = fitment.value.length ? `multiFitment=${fitment.value.join(',')}` : ''
-  const noticeParam = notice.value.length ? `multiNotice=${notice.value.join(',')}` : ''
-  const townshipParam = township.value.length
-    ? `searchtype=1&section=${township.value.join(',')}`
-    : ''
-  const subwayRouteParam = subwayRoute.value ? `searchtype=4&mrtline=${subwayRoute.value}` : ''
-  const subwayStationParam = subwayStation.value.length
-    ? `mrtcoods=${subwayStation.value.join(',')}`
-    : ''
+  const urlParams = {
+    regionid: city.value,
+    ...getOrderParams(),
+    keywords: getKeywordParams(),
+    kind: kind.value,
+    rentprice: rentPrice.value[0] && rentPrice.value[1] ? `${rentPrice.value[0]},${rentPrice.value[1]}` : '',
+    multiRoom: room.value.length ? room.value.join(',') : '',
+    other: other.value.length ? other.value.join(',') : '',
+    shape: shape.value,
+    area: area.value[0] && area.value[1] ? `${area.value[0]},${area.value[1]}` : '',
+    floor: floor.value,
+    multiToilet: toilet.value.length ? toilet.value.join(',') : '',
+    option: option.value.length ? option.value.join(',') : '',
+    multiFitment: fitment.value.length ? fitment.value.join(',') : '',
+    multiNotice: notice.value.length ? notice.value.join(',') : '',
+    searchtype: locationType.value === 'township' ? 1 : locationType.value === 'subway' ? 4 : '',
+    sectionid: township.value.length ? township.value.join(',') : '',
+    mrtline: subwayRoute.value,
+    mrtcoods: subwayStation.value.length ? subwayStation.value.join(',') : '',
+  }
 
-  const urlParams = [
-    cityParam,
-    orderParam,
-    keywordsParam,
-    kindParam,
-    rentPriceParam,
-    roomParam,
-    otherParam,
-    shapeParam,
-    areaParam,
-    floorParam,
-    toiletParam,
-    optionParam,
-    fitmentParam,
-    noticeParam,
-    townshipParam,
-    subwayRouteParam,
-    subwayStationParam
-  ]
-    .filter((item) => item)
-    .join('&')
+  getRentDataEventV2(urlParams).then((res) => {
+    if (res.status === 200) {
+      const { data } = res
 
-  getRentDataEvent(urlParams ? `${urlParams}` : ' ')
-    .then(({ data }) => {
-      setRentUrlParams(urlParams)
+      setRentUrlParams({
+        ...urlParams,
+        version: data.version,
+        timestamp: data.timestamp
+      })
       setData(data.rentList)
       setRecords(data.records)
       router.push({ name: 'result' })
-    })
-    .finally(() => {
-      showLoading.value = false
-    })
+    } else {
+      alert(res.errorMsg)
+    }
+  }).finally(() => {
+    showLoading.value = false
+  })
 }
 
 function goToMap() {

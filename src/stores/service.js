@@ -1,11 +1,11 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { getRentData } from '@/apis/rent.js'
+import { getRentData, getRentDataV2 } from '@/apis/rent.js'
 
 export const useServiceStore = defineStore('service', () => {
   const rentData = ref([])
   const records = ref(null)
-  const rentUrlParams = ref('')
+  const rentUrlParams = ref(null)
   const keepAliveDataList = ref([])
 
   function setData(val) {
@@ -16,7 +16,7 @@ export const useServiceStore = defineStore('service', () => {
           currentImgIndex: 0
         }
       })
-      .filter((item) => item.photo_list?.length > 0)
+      .filter((item) => item.photoList?.length > 0)
   }
 
   function setRecords(val) {
@@ -35,20 +35,20 @@ export const useServiceStore = defineStore('service', () => {
   }
 
   function prevImg(id) {
-    const index = rentData.value.findIndex((item) => item.post_id === id)
+    const index = rentData.value.findIndex((item) => item.id === id)
     const item = rentData.value[index]
     if (item.currentImgIndex > 0) {
       item.currentImgIndex--
     } else {
-      item.currentImgIndex = item.photo_list.length - 1
+      item.currentImgIndex = item.photoList.length - 1
     }
   }
 
   function nextImg(id) {
-    const index = rentData.value.findIndex((item) => item.post_id === id)
+    const index = rentData.value.findIndex((item) => item.id === id)
     const item = rentData.value[index]
 
-    if (item.currentImgIndex < item.photo_list.length - 1) {
+    if (item.currentImgIndex < item.photoList.length - 1) {
       item.currentImgIndex++
     } else {
       item.currentImgIndex = 0
@@ -70,6 +70,12 @@ export const useServiceStore = defineStore('service', () => {
     })
   }
 
+  function getRentDataEventV2(urlParams) {
+    return getRentDataV2(urlParams).then((result) => {
+      return result
+    })
+  }
+
   return {
     rentData,
     setData,
@@ -79,6 +85,7 @@ export const useServiceStore = defineStore('service', () => {
     setRentUrlParams,
     prevImg,
     nextImg,
-    getRentDataEvent
+    getRentDataEvent,
+    getRentDataEventV2
   }
 })
