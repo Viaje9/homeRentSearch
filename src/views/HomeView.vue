@@ -6,8 +6,9 @@
       </div>
     </div>
   </div>
-  <div class="max-w-xl">
-    <button type="button" class="w-full h-10 bg-blue-500 text-white" @click="goToMap()">Map</button>
+  <div class="max-w-xl ">
+    <button type="button" class="w-1/2 h-10 bg-blue-500 text-white" @click="goToMap()">Map</button>
+    <button type="button" class="w-1/2 h-10 bg-blue-600 text-white mb-2" @click="goToMemoryPage('view')">記憶選單</button>
   </div>
   <div>
     <div class="max-w-xl">
@@ -184,6 +185,7 @@
       </div>
     </div>
     <div class="flex justify-center mb-24">
+      <button type="button" class="btn btn-danger submit" @click="saveCurrentOptions()">儲存</button>
       <button type="button" class="btn btn-success submit" @click="submit()">Submit</button>
     </div>
   </div>
@@ -511,6 +513,36 @@ function submit() {
 
 function goToMap() {
   router.push({ name: 'map' })
+}
+
+function goToMemoryPage(mode) {
+  router.push({ name: 'MemoryPage', params: { mode } }); // 傳遞模式參數
+}
+
+function saveCurrentOptions() {
+  const currentOptions = {
+    order: order.value,
+    keywords: keywords.value,
+    kind: kind.value,
+    rentPrice: rentPrice.value,
+    room: room.value,
+    other: other.value,
+    shape: shape.value,
+    area: area.value,
+    floor: floor.value,
+    toilet: toilet.value,
+    option: option.value,
+    fitment: fitment.value,
+    notice: notice.value,
+    city: city.value,
+    locationType: locationType.value,
+    township: township.value,
+    subwayRoute: subwayRoute.value,
+    subwayStation: subwayStation.value,
+  };
+
+  localStorage.setItem('currentOptions', JSON.stringify(currentOptions));
+  goToMemoryPage('add')
 }
 </script>
 

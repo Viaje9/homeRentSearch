@@ -1,4 +1,16 @@
 <template>
+  <div class="items-center bg-slate-500">
+    <div class="text-white text-lg font-medium flex py-2">
+      <div class="pl-2 mr-2">
+        <input type="checkbox" id="filterRepeat" v-model="filterRepeat" class="mr-2" />
+        <label for="filterRepeat" class="text-white text-lg">過濾重複</label>
+      </div>
+      <div class="pl-2 mr-2">
+        <input type="checkbox" id="filterTopBottom" v-model="filterTopBottom" class="mr-2" />
+        <label for="filterTopBottom" class="text-white text-lg">過濾頂樓地下室</label>
+      </div>
+    </div>
+  </div>
   <div class="flex flex-wrap pb-24 justify-center">
     <template v-for="item in filterRentData" :key="item.id">
       <div class="m-2" style="width: 22rem">
@@ -28,18 +40,11 @@
   </div>
 
   <div class="fixed bottom-0 left-0 z-50 w-full h-28 pb-4 bg-slate-500 border-t border-gray-200">
-    <div class="grid h-1/2 max-w-lg grid-cols-2 mx-auto font-medium">
+    <div class="grid h-1/2 max-w-lg grid-cols-1 mx-auto font-medium">
       <button type="button" class="inline-flex flex-col items-center justify-center bg-slate-400 px-5 text-white"
         @click="research()">
         重新查詢
       </button>
-      <span class="inline-flex flex-col items-center justify-center px-5 text-white" @click="showRepeat = !showRepeat"
-        :class="{
-          'bg-blue-500': showRepeat,
-          'bg-gray-500': !showRepeat
-        }">
-        顯示重複
-      </span>
     </div>
 
     <div class="grid h-1/2 max-w-lg grid-cols-4 mx-auto font-medium">
@@ -76,18 +81,24 @@ const serviceStore = useServiceStore()
 const { setData, setRentUrlParams, getRentDataEventV2 } = serviceStore
 const page = ref(0)
 const showLoading = ref(false)
-const showRepeat = ref(false)
+const filterRepeat = ref(false)
+const filterTopBottom = ref(false)
 
 const filterRentData = computed(() => {
   return serviceStore.rentData.reduce((acc, obj) => {
     let existingObj = acc.find((item) => item.location === obj.location)
-    if (existingObj && !showRepeat.value) {
+    if (existingObj && filterRepeat.value) {
       existingObj.count++
     } else {
       acc.push({ ...obj, count: 1 })
     }
     return acc
-  }, [])
+  }, []).filter((item) => {
+    if (filterTopBottom.value) {
+      return item.allfloor !== item.floor
+    }
+    return true
+  })
 })
 
 function prevPage() {
