@@ -81,8 +81,8 @@ const serviceStore = useServiceStore()
 const { setData, setRentUrlParams, getRentDataEventV2 } = serviceStore
 const page = ref(0)
 const showLoading = ref(false)
-const filterRepeat = ref(false)
-const filterTopBottom = ref(false)
+const filterRepeat = ref(true)
+const filterTopBottom = ref(true)
 
 const filterRentData = computed(() => {
   return serviceStore.rentData.reduce((acc, obj) => {
