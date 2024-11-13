@@ -95,7 +95,7 @@ const filterRentData = computed(() => {
     return acc
   }, []).filter((item) => {
     if (filterTopBottom.value) {
-      return item.allfloor !== item.floor && item.floor !== 1
+      return item.allfloor !== item.floor && item.floor > 1
     }
     return true
   })
