@@ -70,7 +70,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useServiceStore } from '@/stores/service.js'
 import { useRouter } from 'vue-router'
 import ProcessImg from '@/components/ProcessImg.vue'
@@ -177,4 +177,8 @@ function research() {
   setRentUrlParams('')
   router.push({ name: 'home' })
 }
+
+onMounted(() => {
+  window.scrollTo(0, 0)
+})
 </script>

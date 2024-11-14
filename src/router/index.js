@@ -36,7 +36,11 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const loginStore = useLoginStore()
-  if (to.name !== 'login' && !loginStore.isAuthenticated) {
+  if (
+    to.name !== 'login' &&
+    !loginStore.isAuthenticated &&
+    import.meta.env.MODE !== 'development'
+  ) {
     next({ name: 'login' })
   } else {
     next()
