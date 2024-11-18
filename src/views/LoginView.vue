@@ -3,7 +3,7 @@
     <h1>請輸入密碼</h1>
     <form @submit.prevent="login">
       <div class="form-group">
-        <input type="password" v-model="password" id="password" required />
+        <input autocomplete="no" type="password" v-model="password" id="password" required />
       </div>
       <button type="submit">登入</button>
     </form>
